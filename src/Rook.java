@@ -10,12 +10,12 @@ public class Rook extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {                 // chess field check
-            if (line == toLine ^ column == toColumn) {                                     // right move check
-                if (isEmptyLine(chessBoard, line, column, toLine, toColumn)) {              // empty line check
-                    if (chessBoard.board[toLine][toColumn] == null) {                       // can attack check
-                        return true;
-                    } else return !chessBoard.board[toLine][toColumn].getColor().equals(getColor());
+        if (isInsideChessField(chessBoard, toLine, toColumn)) {
+            if (isAnotherField(line, column, toLine, toColumn)) {
+                if (isStraightMove(line, column, toLine, toColumn)) {
+                    if (isEmptyLine(chessBoard, line, column, toLine, toColumn)) {
+                        return isAttackOrEmptyField(chessBoard, toLine, toColumn);
+                    } else return false;
                 } else return false;
             } else return false;
         } else return false;
@@ -24,13 +24,5 @@ public class Rook extends ChessPiece {
     @Override
     public String getSymbol() {
         return "R";
-    }
-
-    private boolean isEmptyLine(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        boolean isEmpty = true;
-        int dirX = Integer.compare(toLine, line);
-        int dirY = Integer.compare(toColumn, column);
-        isEmpty = Queen.isEmptyX(chessBoard, line, column, toLine, toColumn, isEmpty, dirX, dirY);
-        return isEmpty;
     }
 }

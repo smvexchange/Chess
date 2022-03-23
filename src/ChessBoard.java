@@ -1,9 +1,29 @@
 public class ChessBoard {
     public ChessPiece[][] board = new ChessPiece[8][8]; // creating a field for game
+    private final PreviousChessPiece previousChessPiece;
     String nowPlayer;
+    private boolean isPassingPawn;
+    private boolean isPawnPromotion;
 
     public ChessBoard(String nowPlayer) {
         this.nowPlayer = nowPlayer;
+        this.previousChessPiece = new PreviousChessPiece();
+    }
+
+    public boolean isPassingPawn() {
+        return isPassingPawn;
+    }
+
+    public void setPassingPawn(boolean passingPawn) {
+        isPassingPawn = passingPawn;
+    }
+
+    public boolean isPawnPromotion() {
+        return isPawnPromotion;
+    }
+
+    public void setPawnPromotion(boolean pawnPromotion) {
+        isPawnPromotion = pawnPromotion;
     }
 
     public String nowPlayerColor() {
@@ -24,8 +44,23 @@ public class ChessBoard {
 
                 board[endLine][endColumn] = board[startLine][startColumn]; // if piece can move, we moved a piece
                 board[startLine][startColumn] = null; // set null to previous cell
+                if (isPassingPawn() && board[endLine][endColumn].getSymbol().equals("P")   // passing pawn attack
+                        && startLine == previousChessPiece.line
+                        && Math.abs(startColumn - previousChessPiece.column) == 1) {
+                    if (board[endLine][endColumn].getColor().equals("White")) {
+                        board[endLine - 1][endColumn] = null;
+                    } else {
+                        board[endLine + 1][endColumn] = null;
+                    }
+                    setPassingPawn(false);
+                }
+                if (board[endLine][endColumn].getSymbol().equals("P")) {  // set pawn promotion flag
+                    setPawnPromotion((board[endLine][endColumn].getColor().equals("White") && endLine == 7)
+                            || (board[endLine][endColumn].getColor().equals("Black") && endLine == 0));
+                }
+                previousChessPiece.setLine(endLine);     // save previous chess piece coordinates
+                previousChessPiece.setColumn(endColumn);
                 this.nowPlayer = this.nowPlayerColor().equals("White") ? "Black" : "White";
-
                 return true;
             } else return false;
         } else return false;
@@ -129,6 +164,19 @@ public class ChessBoard {
                     return true;
                 } else return false;
             } else return false;
+        }
+    }
+
+    public static class PreviousChessPiece {
+        private int line = 0;
+        private int column = 0;
+
+        public void setLine(int line) {
+            this.line = line;
+        }
+
+        public void setColumn(int column) {
+            this.column = column;
         }
     }
 }

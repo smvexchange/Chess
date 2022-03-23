@@ -10,8 +10,8 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        int dir = 0;
-        int startPos = 0;
+        int dir;
+        int startPos;
         if (getColor().equals("White")) {
             dir = 1;
             startPos = 1;
@@ -20,19 +20,24 @@ public class Pawn extends ChessPiece {
             startPos = 6;
         } else return false;
 
-        if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {
-            if (column == toColumn) {
-                if (chessBoard.board[toLine][toColumn] == null) {
-                    if (line + 2 * dir == toLine
-                            && chessBoard.board[line + dir][column] == null
-                            && line == startPos) {
-                        return true;
-                    } else return line + dir == toLine;
-                } else return false;
-            } else if (Math.abs(column - toColumn) == 1) {
-                if (chessBoard.board[toLine][toColumn] != null
-                        && !(chessBoard.board[toLine][toColumn].getColor().equals(getColor()))) {
-                    return true;
+        if (isInsideChessField(chessBoard, toLine, toColumn)) {
+            if (isAnotherField(line, column, toLine, toColumn)) {
+                if (column == toColumn) {
+                    if (chessBoard.board[toLine][toColumn] == null) {
+                        if (line + 2 * dir == toLine
+                                && chessBoard.board[line + dir][column] == null
+                                && line == startPos) {
+                            chessBoard.setPassingPawn(true);  // set passing pawn flag
+                            return true;
+                        } else {
+                            chessBoard.setPassingPawn(false);  // unset passing pawn flag
+                            return line + dir == toLine;
+                        }
+                    } else return false;
+                } else if (Math.abs(column - toColumn) == 1) {
+                    if (chessBoard.board[toLine][toColumn] != null) {
+                        return !(chessBoard.board[toLine][toColumn].getColor().equals(getColor()));
+                    } else return chessBoard.isPassingPawn();
                 } else return false;
             } else return false;
         } else return false;

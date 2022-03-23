@@ -84,12 +84,28 @@ public class Main {
                         int toLine = Integer.parseInt(a[3]);
                         int toColumn = Integer.parseInt(a[4]);
                         if (board.moveToPosition(line, column, toLine, toColumn)) {
+                            if (board.isPawnPromotion()) {
+                                System.out.println("Превращение пешки!\nКакую фигуру поставить('Q', 'H', 'B' или 'R')?");
+                                String pawnPromotion = scanner.nextLine();
+                                switch (pawnPromotion) {
+                                    case "Q" -> board.board[toLine][toColumn] =
+                                            new Queen(board.nowPlayerColor().equals("White") ? "Black" : "White");
+                                    case "H" -> board.board[toLine][toColumn] =
+                                            new Horse(board.nowPlayerColor().equals("White") ? "Black" : "White");
+                                    case "B" -> board.board[toLine][toColumn] =
+                                            new Bishop(board.nowPlayerColor().equals("White") ? "Black" : "White");
+                                    case "R" -> board.board[toLine][toColumn] =
+                                            new Rook(board.nowPlayerColor().equals("White") ? "Black" : "White");
+                                }
+                                board.setPawnPromotion(false);
+                            }
                             System.out.println("Успешно передвинулись");
                             board.printBoard();
                         } else System.out.println("Передвижение не удалось");
                     } catch (Exception e) {
                         System.out.println("Вы что-то ввели не так, попробуйте ещё раз");
                     }
+
                 }
             }
         }

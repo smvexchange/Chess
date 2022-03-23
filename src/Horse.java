@@ -10,15 +10,11 @@ public class Horse extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {
-            if (line + 2 == toLine || line - 2 == toLine
-                    || line + 1 == toLine || line - 1 == toLine
-                    || column + 2 == toColumn || column - 2 == toColumn
-                    || column + 1 == toColumn || column - 1 == toColumn) {
-                if (chessBoard.board[toLine][toColumn] == null) {
-                    return true;
-                } else if (!(chessBoard.board[toLine][toColumn].getColor().equals(chessBoard.board[line][column].getColor()))) {
-                    return true;
+        if (isInsideChessField(chessBoard, toLine, toColumn)) {
+            if (isAnotherField(line, column, toLine, toColumn)) {
+                // this statement checks "L-shape" move and max 2 field move limit
+                if (!(isDiagonalMove(line, column, toLine, toColumn, 2) && isStraightMove(line, column, toLine, toColumn, 2))) {
+                    return isAttackOrEmptyField(chessBoard, toLine, toColumn);
                 } else return false;
             } else return false;
         } else return false;
@@ -27,5 +23,6 @@ public class Horse extends ChessPiece {
     @Override
     public String getSymbol() {
         return "H";
+
     }
 }
