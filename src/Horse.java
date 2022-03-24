@@ -13,8 +13,10 @@ public class Horse extends ChessPiece {
         if (isInsideChessField(chessBoard, toLine, toColumn)) {
             if (isAnotherField(line, column, toLine, toColumn)) {
                 // this statement checks "L-shape" move and max 2 field move limit
-                if (!(isDiagonalMove(line, column, toLine, toColumn, 2) && isStraightMove(line, column, toLine, toColumn, 2))) {
-                    return isAttackOrEmptyField(chessBoard, toLine, toColumn);
+                if (!isDiagonalMove(line, column, toLine, toColumn) && !isStraightMove(line, column, toLine, toColumn)) {
+                    if ((Math.abs(toLine - line) <= 2) && Math.abs(toColumn - column) <= 2) {
+                        return isAttackOrEmptyField(chessBoard, toLine, toColumn);
+                    } else return false;
                 } else return false;
             } else return false;
         } else return false;

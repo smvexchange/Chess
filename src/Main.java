@@ -19,7 +19,7 @@ public class Main {
         board.board[1][3] = new Pawn("White");
         board.board[1][4] = new Pawn("White");
         board.board[1][5] = new Pawn("White");
-        board.board[1][6] = new Pawn("White");
+        board.board[1][6] = new Pawn("White");;
         board.board[1][7] = new Pawn("White");
 
         board.board[7][0] = new Rook("Black");

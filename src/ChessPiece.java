@@ -26,7 +26,8 @@ public abstract class ChessPiece {
 
     // Overloading the method isDiagonalMove
     public boolean isDiagonalMove(int line, int column, int toLine, int toColumn, int fieldLimit) {
-        return Math.abs(toLine - line) <= fieldLimit && Math.abs(toColumn - column) <= fieldLimit;
+        return (Math.abs(toLine - line) <= fieldLimit && Math.abs(toColumn - column) <= fieldLimit)
+                && (Math.abs(toLine - line) == Math.abs(toColumn - column));
     }
 
     public boolean isStraightMove(int line, int column, int toLine, int toColumn) {
