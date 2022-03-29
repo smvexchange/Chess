@@ -2,7 +2,7 @@ public class ChessBoard {
     public ChessPiece[][] board = new ChessPiece[8][8]; // creating a field for game
     private final PreviousChessPiece previousChessPiece;
     String nowPlayer;
-    private boolean isPassingPawn;
+    private boolean isPassingPawn = false;
     private boolean isPawnPromotion;
 
     public ChessBoard(String nowPlayer) {
@@ -53,6 +53,8 @@ public class ChessBoard {
                         board[endLine + 1][endColumn] = null;
                     }
                     setPassingPawn(false);
+                } else if(board[endLine][endColumn].getSymbol().equals("P") && isPassingPawn()) {
+                    setPassingPawn(true);
                 } else setPassingPawn(false);
                 if (board[endLine][endColumn].getSymbol().equals("P")) {  // set pawn promotion flag
                     setPawnPromotion((board[endLine][endColumn].getColor().equals("White") && endLine == 7)
