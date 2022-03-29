@@ -53,7 +53,7 @@ public class ChessBoard {
                         board[endLine + 1][endColumn] = null;
                     }
                     setPassingPawn(false);
-                }
+                } else setPassingPawn(false);
                 if (board[endLine][endColumn].getSymbol().equals("P")) {  // set pawn promotion flag
                     setPawnPromotion((board[endLine][endColumn].getColor().equals("White") && endLine == 7)
                             || (board[endLine][endColumn].getColor().equals("Black") && endLine == 0));
